@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="tr">
+
+<head>
+    <!--  Meta Etiketleri  -->
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,
+            initial-scale=1,maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta property="og:site_name" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="index.html" />
+    <meta property="og:image" content="assets/favicon.ico" />
+    <meta property="og:image:type" content="image/ico" />
+    <meta property="og:image:width" content="" />
+    <meta property="og:image:height" content="" />
+    <link rel="icon" type="image/ico" href="assets/favicon.ico" />
+    <link rel="apple-touch-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <title>Fatura Kesim </title>
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+
+<body >
+    <!--Menü Alanı Başlangıcı-->
+    <!-- Image and text -->
+    <nav class="navbar navbar-dark bg-danger">
+        <a class="navbar-brand" href="/">
+            Fatura Oluşturma
+        </a>
+    </nav>
+
+    <div class="container my-2">
+        <form name="form1" id="form1" action="" method="post">
+
+            <!--Ürün Bilgileri Alanı-->
+            <div class="card w-100">
+                <div class="card-header">
+                    <h5 class="card-title">Ürün Bilgileri</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md">
+                            <label for="productname">Ürün İsmi</label>
+                            <input type="text" name="name" id="productname" class="form-control" placeholder="Ürün
+                                    ismini yazınız...">
+                        </div>
+                        <div class="col-md">
+                            <label for="productcount">Ürün Adeti</label>
+                            <select name="productcount" id="productcount" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div class="col-md">
+                            <label for="productprice">Ürün Tutarı</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="productprice" name="productprice"
+                                    placeholder="Ürün Tutarı">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">₺</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Ürün Bilgileri Alanı Bitişi-->
+
+            <div class="card my-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless w-100">
+                            <tr>
+                                <td>İndirim Oranı</td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" name="sale" id="sale" placeholder="İndirim
+                                                Yüzdesi" class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">%</span>
+                                        </div>
+                                        <input type="text" name="saletutar" id="saletutar" readonly
+                                            class="form-control">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>KDV Oranı</td>
+                                <td>
+
+                                    <div class="input-group">
+                                        <input type="number" name="kdv" id="kdv" value="18" class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">%</span>
+                                        </div>
+                                        <input type="text" name="kdvtutar" id="kdvtutar" readonly
+                                            class="form-control">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Toplam</td>
+                                <td>
+
+                                    <div class="input-group">
+                                        <input type="number" name="total" id="total" readonly class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">₺</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+window.addEventListener("load", () => {
+    /********** DOM Element Seçicileri **********/
+    let productCount = document.querySelector("#productcount");
+    let productPrice = document.querySelector("#productprice");
+    let productSale = document.querySelector("#sale");
+    let productKdv = document.querySelector("#kdv");
+    let productTotal = document.querySelector("#total");
+    let saleTutar = document.querySelector("#saletutar");
+    let kdvTutar = document.querySelector("#kdvtutar");
+
+    // ürün işlemleri  & hesaplamalar
+    var product = {
+    count: 1,
+    price: null,
+    kdv: 18,
+    sale: null,
+    total: null,
+    };
+
+    // ürün işlemleri değer atamaları
+
+    productCount.addEventListener("change", (e) => {
+    product.count = e.target.value;
+    //console.log(product.count);
+    total();
+    });
+
+    productPrice.addEventListener("keyup", (e) => {
+    product.price = e.target.value;
+    //console.log(product.price);
+    total();
+    });
+
+    productSale.addEventListener("keyup", (e) => {
+    product.sale = e.target.value;
+    //console.log(product.sale);
+    total();
+    });
+
+    productKdv.addEventListener("keyup", (e) => {
+    product.kdv = e.target.value;
+    //console.log(product.kdv);
+    total();
+    });
+
+    // Ürün Hesaplama
+
+    function total() {
+    if (product.price != null && product.sale != null) {
+        // Ürün Toplam Fiyatı
+        let productPrice = product.count * product.price;
+
+        // Ürün Toplam Fiyatına İndirim Ekleme
+        let productSale = (productPrice * product.sale) / 100;
+        productPrice = productPrice - productSale;
+
+        // Ürün KDV Oranı Hesaplama ve Ekleme
+        let productKdv = (productPrice * product.kdv) / 100;
+        productPrice = productPrice + productKdv;
+
+        // DOM a Aktarım
+        saleTutar.value = productSale+' TL';
+        kdvTutar.value = productKdv +' TL';
+        productTotal.value = productPrice;
+
+        // console.log('İndirim Tutarı ==> -'+productSale)
+        // console.log('KDV Tutarı ==> '+productKdv)
+        // console.log('Toplam     ==> '+productPrice)
+    }
+    }
+
+    total();
+});
+    </script>
+</body>
+
+</html>

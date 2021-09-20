@@ -1,0 +1,23 @@
+{
+  "name": "fatura-kesim-electron",
+  "version": "1.0.0",
+  "description": "Electron JS ile Fatura Kesim Uygulaması",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "electron",
+    "electron-js",
+    "fatura",
+    "kesim"
+  ],
+  "author": "HidemYas",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^14.0.1"
+  },
+  "devDependencies": {
+    "electron-packager": "^15.4.0"
+  }
+}
